@@ -50,7 +50,7 @@ case $1 in
 		find $DIRECTORY/* -type f -mtime +180 -exec rm -rf {} \;
 	done
 
-	find /usr/local/maldetect.bk* -maxdepth 0 -type d -mtime +60 -exec rm -rf {} \;
+	find /usr/local/maldetect.bk* -maxdepth 0 -type d -mtime +180 -exec rm -rf {} \;
 
 	# check for new release version
 	/usr/local/maldetect/maldet -d > /dev/null 2>&1
