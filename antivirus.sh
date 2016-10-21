@@ -123,7 +123,7 @@ case $1 in
 
 	if [ 0 -ne "$check_email" ] || [ 0 -ne "$check_quar" ]
 	then
-		SUBJ="Maybe maldet was updated. Please open this page and run commands"
+		SUBJ="Maybe maldet was updated. Please change config file conf.maldet. Antivirus unable to quarantine viruses"
 		echo "$SUBJ" | mail -s "Maldet config file was changed on $HOST" "$EMAILTO"
 	fi
 
