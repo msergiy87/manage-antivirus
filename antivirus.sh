@@ -39,18 +39,16 @@ case $1 in
 	sleep "$(echo $RANDOM | cut -c1-3)" > /dev/null 2>&1
 
 	# clear quarantine/session/tmp data older then 14 days
-	DIR1="/usr/local/maldetect/sess"
-	DIR2="/usr/local/maldetect/quarantine"
+	#DIR1="/usr/local/maldetect/sess"
+	#DIR2="/usr/local/maldetect/quarantine"
 
 	#DIR3="/usr/local/maldetect/pub/*/"
 	#DIR4="/usr/local/maldetect/tmp"
 
-	for DIRECTORY in $DIR1 $DIR2
-	do
-		find $DIRECTORY/* -type f -mtime +180 -exec rm -rf {} \;
-	done
-
-	find /usr/local/maldetect.bk* -maxdepth 0 -type d -mtime +180 -exec rm -rf {} \;
+	#for DIRECTORY in $DIR1 $DIR2
+	#do
+	#	find $DIRECTORY/* -type f -mtime +180 -exec rm -rf {} \;
+	#done
 
 	# check for new release version
 	/usr/local/maldetect/maldet -d > /dev/null 2>&1
@@ -61,7 +59,8 @@ case $1 in
 	freshclam --quiet > /dev/null 2>&1
 
 	# if were running inotify monitoring, send daily hit summary
-	if [ "$(pgrep -l -u root inotifywait)" ]; then
+#	if [ "$(pgrep -l -u root inotifywait)" ]; then
+	if [ "$(ps -A --user root -o "cmd" | grep maldetect | grep inotifywait)" ]; then
 	/usr/local/maldetect/maldet --alert-daily > /dev/null 2>&1
 	else
 		# scan the last 2 days of file changes
@@ -114,6 +113,8 @@ case $1 in
 "scan" )
 
 	# result is here /var/log/clamav/antivirus-clamscan.log and /usr/local/maldetect/logs
+
+	find /usr/local/maldetect.bk* -maxdepth 0 -type d -mtime +40 -exec rm -rf {} \;
 
 	# Check if config file changed
 	grep '^email_addr="hosting-security@example.com"' /usr/local/maldetect/conf.maldet > /dev/null 2>&1
@@ -182,7 +183,8 @@ case $1 in
 
 	for SCAN_DIR in "/var/www" "/var/tmp"
 	do
-		clamscan -ri --exclude="access.log*" --scan-swf=no --move=/tmp/quarantine --stdout>$OUT "$SCAN_DIR"
+#		clamscan -ri --exclude="access.log*" --scan-swf=no --move=/tmp/quarantine --stdout>$OUT "$SCAN_DIR"
+		clamscan --recursive --infected --exclude="access.log*" --scan-swf=no --move=/tmp/quarantine --stdout>$OUT "$SCAN_DIR"
 
 		CODE="$?"
 
@@ -239,7 +241,7 @@ case $1 in
 	# Delete viruses from /tmp/quarantine that older 14 days
 	#-------------------------------------------------------
 
-	find /tmp/quarantine/* -type f -mtime +180 -exec rm -rf {} \;
+	#find /tmp/quarantine/* -type f -mtime +180 -exec rm -rf {} \;
 
 	/etc/init.d/clamav-daemon stop > /dev/null 2>&1
 	/etc/init.d/clamav-freshclam stop > /dev/null 2>&1
