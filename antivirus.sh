@@ -59,7 +59,7 @@ case $1 in
 	freshclam --quiet > /dev/null 2>&1
 
 	# if were running inotify monitoring, send daily hit summary
-#	if [ "$(pgrep -l -u root inotifywait)" ]; then
+	#if [ "$(pgrep -l -u root inotifywait)" ]; then
 	if [ "$(ps -A --user root -o "cmd" | grep maldetect | grep inotifywait)" ]; then
 	/usr/local/maldetect/maldet --alert-daily > /dev/null 2>&1
 	else
@@ -183,7 +183,6 @@ case $1 in
 
 	for SCAN_DIR in "/var/www" "/var/tmp"
 	do
-#		clamscan -ri --exclude="access.log*" --scan-swf=no --move=/tmp/quarantine --stdout>$OUT "$SCAN_DIR"
 		clamscan --recursive --infected --exclude="access.log*" --scan-swf=no --move=/tmp/quarantine --stdout>$OUT "$SCAN_DIR"
 
 		CODE="$?"
