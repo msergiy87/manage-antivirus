@@ -91,8 +91,8 @@ case $1 in
 		iptables -I ant_update 1 -d db.local.clamav.net -p tcp -m multiport --ports 80,443 -j ACCEPT
 		iptables -I ant_update 1 -d database.clamav.net -p tcp -m multiport --ports 80,443 -j ACCEPT
 		iptables -I ant_update 1 -d db.ua.clamav.net -p tcp -m multiport --ports 80,443 -j ACCEPT
-		iptables -I ant_update 1 -d rfxn.com -p tcp --dport 80 -j ACCEPT
-		iptables -I ant_update 1 -d cdn.rfxn.com -p tcp --dport 80 -j ACCEPT
+		iptables -I ant_update 1 -d rfxn.com -p tcp -m multiport --ports 80,443 -j ACCEPT
+		iptables -I ant_update 1 -d cdn.rfxn.com -p tcp -m multiport --ports 80,443 -j ACCEPT
 		iptables -I ant_update 1 -d rkhunter.sourceforge.net -p tcp --dport 80 -j ACCEPT
 		iptables -I ant_update 1 -d projects.sourceforge.net -p tcp --dport 80 -j ACCEPT
 		iptables -I ant_update 1 -d www.ispconfig.org -p tcp --dport 80 -j ACCEPT	# for ispconfig
