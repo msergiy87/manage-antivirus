@@ -64,12 +64,12 @@ case $1 in
 	/usr/local/maldetect/maldet --alert-daily > /dev/null 2>&1
 	else
 		# scan the last 2 days of file changes
-		if [ -d "/usr/local/ispconfig" ] ; then
+#		if [ -d "/usr/local/ispconfig" ] ; then
 
 		# ISP-Config
 		/usr/local/maldetect/maldet -b -r /var/www 2 > /dev/null 2>&1
 		/usr/local/maldetect/maldet -b -r /var/tmp 2 > /dev/null 2>&1
-		fi
+#		fi
 	fi
 	;;
 
